@@ -50,7 +50,7 @@ if( isset($_POST['register']) ) {
                 </div>
             
             </div>
-            <button type="submit" class="btn btn-warning float-right" name="register">Sign in</button>
+            <button type="submit" class="btn btn-warning float-right" name="register">Register</button>
             </form>
         </div>
         <div class="col-md-3"></div>

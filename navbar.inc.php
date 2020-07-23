@@ -1,3 +1,5 @@
+<?php require_once './User.class.php'; ?>
+
 <!-- This is navbar -->
 
 
@@ -20,15 +22,35 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Contact us</a>
       </li>
+
+      <?php if( User::isLoggedIn() ) { 
+              $loggedInUser = new User();
+              $loggedInUser->loadLoggedInUser();
+      ?>
+      
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Have account
+        <?php echo $loggedInUser->name; ?>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="register.php">Sign up</a>
-          <a class="dropdown-item" href="#">Log in</a>
+          <a class="dropdown-item" href="logout.php">Log out</a>
         </div>
       </li>
+
+      <?php } else { ?>
+
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Have account
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" href="register.php">Sign up</a>
+        <a class="dropdown-item" href="login.php">Log in</a>
+      </div>
+      </li>
+      
+      <?php } ?>
     </ul>
   </div>
 </nav>
+

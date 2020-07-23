@@ -69,7 +69,7 @@ class User {
       $success = $stmt_insert->execute([
           ':name' => ucfirst($this->name),
           ':email' => $this->email,
-          ':password' => password_hash($this->password, PASSWORD_DEFAULT) //encrypts the password
+          ':password' => md5($this->password) //encrypts the password
         ]);
         
       if(!$success) {
@@ -137,5 +137,46 @@ class User {
   
       return true;
     }  
+
+    // Log in user
+
+    public function login() {
+      $stmt_getUser = $this->db->prepare("
+        SELECT *
+        FROM `users`
+        WHERE `email` = :email
+        AND `password` = :password
+      ");
+      $stmt_getUser->execute([
+        ':email' => $this->email,
+        ':password' => md5($this->password)
+      ]);
+  
+      $user = $stmt_getUser->fetch();
+  
+      if( !$user ) {
+        Helper::addError('Login failed. Please check your email and/or password.');
+        return false;
+      }
+  
+      Helper::sessionStart();
+      $_SESSION['user_id'] = $user->id;
+      return true;
+    }
+
+    public static function isLoggedIn() {
+      require_once './Helper.class.php';
+      Helper::sessionStart();
+      return isset($_SESSION['user_id']) && $_SESSION['user_id'] != "";
+    }
+  
+    public function loadLoggedInUser() {
+      if( !User::isLoggedIn() ) {
+        return false;
+      }
+      Helper::sessionStart();
+      $this->id = $_SESSION['user_id'];
+      $this->loadUserFromDB();
+    }
   
 }
