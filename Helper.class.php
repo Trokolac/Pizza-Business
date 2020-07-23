@@ -1,5 +1,7 @@
 <?php
 
+// Handle alerts
+
 class Helper {
 
   public static function sessionStart() {

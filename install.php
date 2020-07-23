@@ -10,7 +10,7 @@ $stmt_createUsersTable = $db->prepare("
         `id` int AUTO_INCREMENT PRIMARY KEY,
         `email` varchar(30),
         `name` varchar(30),
-        `password` varchar(32),
+        `password` varchar(60),
         `created_at` datetime DEFAULT now(),
         `updated_at` datetime DEFAULT now() ON UPDATE now(),
         `deleted_at` datetime DEFAULT NULL  

@@ -25,7 +25,7 @@
           Have account
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Sign up</a>
+          <a class="dropdown-item" href="register.php">Sign up</a>
           <a class="dropdown-item" href="#">Log in</a>
         </div>
       </li>
