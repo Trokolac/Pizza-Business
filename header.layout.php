@@ -11,3 +11,4 @@
 </head>
 <body>
     
+<?php include './navbar.inc.php'; ?>
