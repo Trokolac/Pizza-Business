@@ -15,8 +15,8 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8"></div>
-        <div class="col-md-4">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
         <?php require_once './Helper.class.php'; ?>
         <?php if(Helper::ifError()) { ?>
             <div class="alert alert-danger">
@@ -30,6 +30,7 @@
             </div>
         <?php } ?>
         </div>
+        <div class="col-md-3"></div>
     </div>
 </div>
 

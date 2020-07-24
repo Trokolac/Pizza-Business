@@ -44,4 +44,20 @@ if( $numOfUsers <= 0 ) {
   ]);
 }
 
+// CREATE PIZZA TABLE
+
+$stmt_createPizzaTable = $db->prepare("
+  CREATE TABLE IF NOT EXISTS `pizza` (
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `title` varchar(255),
+    `description` text,
+    `price` int,
+    `img` varchar(255),
+    `created_at` datetime DEFAULT now(),
+    `updated_at` datetime DEFAULT now() ON UPDATE now(),
+    `deleted_at` datetime DEFAULT null
+  )
+");
+$stmt_createPizzaTable->execute();
+
 var_dump( $db->errorInfo() );
