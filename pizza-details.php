@@ -9,6 +9,26 @@ require_once './Helper.class.php';
 
 $pizza = new Pizza($_GET['id']);
 
+// Stops uzers to browse nonexisting id of pizzas in url
+
+if( !$pizza->created_at || $pizza->deleted_at ) {
+    Helper::addError("404 Page not found.");
+    header("Location: ./index.php");
+    die();
+}
+
+// Insert pizza into cart 
+
+if( isset($_POST['add_to_cart']) ) {
+    if( $pizza->addToCart($_POST['quantity']) ) {
+        Helper::addMessage("<strong>{$pizza->title}</strong> x{$_POST['quantity']} added to cart.");
+        header("Location: ./menu.php");
+        die();
+    } else {
+        header("Location: ./pizza-details.php?id=".$_GET['id']);
+        die();
+    }
+}
 
 ?>
 
@@ -32,7 +52,7 @@ $pizza = new Pizza($_GET['id']);
 
             <br clear="all" />
             <hr>
-            <form action="./product-details.php?id=<?php echo $_GET['id']; ?>" method="post" class="float-right">
+            <form action="./pizza-details.php?id=<?php echo $_GET['id']; ?>" method="post" class="float-right">
 
                 <div class="input-group mt-3">
 

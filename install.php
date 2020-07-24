@@ -60,4 +60,19 @@ $stmt_createPizzaTable = $db->prepare("
 ");
 $stmt_createPizzaTable->execute();
 
+// CREATE CARTS TABLE
+
+$stmt_createCartsTable = $db->prepare("
+  CREATE TABLE IF NOT EXISTS `carts` (
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `user_id` int,
+    `pizza_id` int,
+    `quantity` int,
+    `created_at` datetime DEFAULT now(),
+    `updated_at` datetime DEFAULT now() ON UPDATE now(),
+    `deleted_at` datetime DEFAULT null
+  )
+");
+$stmt_createCartsTable->execute();
+
 var_dump( $db->errorInfo() );

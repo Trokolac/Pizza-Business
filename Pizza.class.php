@@ -182,5 +182,58 @@ class Pizza {
         $stmt_get->execute();
         return $stmt_get->fetchAll();
     }
-  
+    
+    // Handle adding to cart
+
+    public function addToCart($quantity) {
+        Helper::sessionStart();
+    
+        if( !isset($_SESSION['user_id']) ) {
+          Helper::addError('You have to be logged in to add product to cart.');
+          return false;
+        }
+
+        // Showing cart info
+
+        $stmt_getCartProduct = $this->db->prepare("
+          SELECT *
+          FROM `carts`
+          WHERE `pizza_id` = :pizza_id
+          AND `user_id` = :user_id
+        ");
+        $stmt_getCartProduct->execute([
+          ':pizza_id' => $this->id,
+          ':user_id' => $_SESSION['user_id']
+        ]);
+        $pizzaInCart = $stmt_getCartProduct->fetch();
+    
+        // Update  quantity
+
+        if($pizzaInCart) {
+          $stmt_updateQuantity = $this->db->prepare("
+            UPDATE `carts`
+            SET `quantity` = :new_quantity
+            WHERE `id` = :cart_id
+          ");
+          return $stmt_updateQuantity->execute([
+            ':new_quantity' => $pizzaInCart->quantity + $quantity,
+            ':cart_id' => $pizzaInCart->id
+          ]);
+        } else {
+
+        // Insert pizza into cart
+
+          $stmt_addToCart = $this->db->prepare("
+            INSERT INTO `carts`
+            (`user_id`, `pizza_id`, `quantity`)
+            VALUES
+            (:user_id, :pizza_id, :quantity)
+          ");
+          return $stmt_addToCart->execute([
+            ':user_id' => $_SESSION['user_id'],
+            ':pizza_id' => $this->id,
+            ':quantity' => $quantity
+          ]);
+        }
+      }
 }
