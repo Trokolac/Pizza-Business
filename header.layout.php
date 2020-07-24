@@ -10,26 +10,34 @@
 
 </head>
 <body>
-    
+<!-- Output errors -->
 <?php include './navbar.inc.php'; ?>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12 mt-3">
-            <div class="content">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+        <?php require_once './Helper.class.php'; ?>
+        <?php if(Helper::ifError()) { ?>
+            <div class="alert alert-danger">
+            <strong>Error!</strong> <?php echo Helper::getError(); ?>
+            </div>
+        <?php } ?>
 
-            <!-- Output errors -->
+        <?php if(Helper::ifMessage()) { ?>
+            <div class="alert alert-warning">
+            <strong>Success!</strong> <?php echo Helper::getMessage(); ?>
+            </div>
+        <?php } ?>
+        </div>
+    </div>
+</div>
 
-            <?php require_once './Helper.class.php'; ?>
 
-            <?php if(Helper::ifError()) { ?>
-                <div class="alert alert-danger">
-                <strong>Error!</strong> <?php echo Helper::getError(); ?>
-                </div>
-            <?php } ?>
 
-            <?php if(Helper::ifMessage()) { ?>
-                <div class="alert alert-warning">
-                <strong>Success!</strong> <?php echo Helper::getMessage(); ?>
-                </div>
-            <?php } ?>
+
+
+        
+            
+
+            
