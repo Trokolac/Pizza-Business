@@ -14,7 +14,7 @@
         <a class="nav-link" href="./index.php">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Menu</a>
+        <a class="nav-link" href="./menu.php">Menu</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
@@ -33,6 +33,9 @@
         <?php echo $loggedInUser->name; ?>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+          <?php if($loggedInUser->acc_type == 'admin') { ?>
+            <a class="dropdown-item" href="./create-menu.php">Add new pizza</a>
+          <?php } ?>
           <a class="dropdown-item" href="./logout.php">Log out</a>
         </div>
       </li>
