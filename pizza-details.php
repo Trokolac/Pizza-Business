@@ -35,8 +35,8 @@ if( isset($_POST['add_to_cart']) ) {
 <?php include './header.layout.php'; ?>
 
 
-<div class="container">
-    <h1 class="mt-5 mb-5"><?php echo $pizza->title; ?></h1>
+<div class="container mt-5">
+    <h1 class="mb-5"><?php echo $pizza->title; ?></h1>
     <div class="row">
 
         <div class="col-md-5">

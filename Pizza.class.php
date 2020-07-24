@@ -193,7 +193,7 @@ class Pizza {
           return false;
         }
 
-        // Showing cart info
+        // Showing pivot table cart info
 
         $stmt_getCartProduct = $this->db->prepare("
           SELECT *
@@ -236,4 +236,48 @@ class Pizza {
           ]);
         }
       }
+
+    // Select info from carts and pizza table
+
+    public function getCart() {
+  
+      $stmt_getCart = $this->db->prepare("
+        SELECT
+          `carts`.`id`,
+          `pizza`.`title`,
+          `pizza`.`price`,
+          `carts`.`quantity`,
+          `carts`.`created_at`
+        FROM `carts`, `pizza`
+        WHERE `carts`.`pizza_id` = `pizza`.`id`
+        AND `carts`.`user_id` = :user_id
+      ");
+      $stmt_getCart->execute([ ':user_id' => $_SESSION['user_id'] ]);
+      return $stmt_getCart->fetchAll();
+    }
+
+    // Delete items from cart
+
+    public function removeFromCart($id) {
+      $stmt_removeFromCart = $this->db->prepare("
+        DELETE
+        FROM `carts`
+        WHERE `id` = :id
+      ");
+      return $stmt_removeFromCart->execute([ ':id' => $id ]);
+    }
+  
+    // Update quantity in cart
+
+    public function updateQuantity($cartId, $newQuantity) {
+      $stmt_updateQuantity = $this->db->prepare("
+        UPDATE `carts`
+        SET `quantity` = :new_quantity
+        WHERE `id` = :cart_id
+      ");
+      return $stmt_updateQuantity->execute([
+        ':cart_id' => $cartId,
+        ':new_quantity' => $newQuantity
+      ]);
+    }
 }

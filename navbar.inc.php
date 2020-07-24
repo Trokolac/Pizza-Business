@@ -22,6 +22,9 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Contact us</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./cart.php">Cart</a>
+      </li>
 
       <?php if( User::isLoggedIn() ) { 
               $loggedInUser = new User();
