@@ -7,11 +7,14 @@
 
     <!-- Include bootstrap -->
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
-
+    <!-- Include custom CSS -->
+    <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-<!-- Output errors -->
+
 <?php include './navbar.inc.php'; ?>
+
+<!-- Output errors -->
 
 <div class="container-fluid">
     <div class="row">

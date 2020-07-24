@@ -116,7 +116,7 @@ class Pizza {
 
     public function imageIsValid() {
         if( !in_array($this->imageData['type'], $this->allowedImgTypes) ) {
-        Helper::addError('File type not allowed.');
+        Helper::addError('File type not allowed, default picture is set.');
         return false;
         }
 
@@ -168,6 +168,19 @@ class Pizza {
         }
 
         return true;
+    }
+
+    // Pull data from DB and show in order they are put in
+
+    public function allPizzas() { 
+        $stmt_get = $this->db->prepare("
+        SELECT *
+        FROM `pizza`
+        WHERE `deleted_at` IS NULL
+        ORDER BY id ASC
+        ");
+        $stmt_get->execute();
+        return $stmt_get->fetchAll();
     }
   
 }
