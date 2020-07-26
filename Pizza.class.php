@@ -280,4 +280,27 @@ class Pizza {
         ':new_quantity' => $newQuantity
       ]);
     }
+
+    // Count pizza with different id and show the number
+
+    public function showCartQuantity() {
+      
+      $userId = $_SESSION['user_id'];
+        
+      $stmt_get = $this->db->prepare("
+        SELECT *
+        FROM `carts`
+        WHERE `user_id` = $userId
+      ");
+      $stmt_get->execute();
+      $cart = $stmt_get->fetchAll();
+      
+      $numberInCart = count($cart);
+        
+      if($numberInCart){
+        echo '&ensp;<span class="nav- link" >';
+        echo $numberInCart;
+        echo '</span>';
+      }
+    }
 }

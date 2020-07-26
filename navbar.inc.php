@@ -1,4 +1,5 @@
 <?php require_once './User.class.php'; ?>
+<?php require_once './Pizza.class.php'; ?>
 
 <!-- This is navbar -->
 
@@ -22,15 +23,18 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Contact us</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="./cart.php">Cart</a>
-      </li>
 
-      <?php if( User::isLoggedIn() ) { 
-              $loggedInUser = new User();
-              $loggedInUser->loadLoggedInUser();
+      <?php 
+      if( User::isLoggedIn() ) { 
+        $loggedInUser = new User();
+        $loggedInUser->loadLoggedInUser();
+
+        
       ?>
-      
+      <li class="nav-item">
+        <a class="nav-link" href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart<?php $cartNum = new Pizza();
+        $sumOfPizza = $cartNum->showCartQuantity(); ?></a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <?php echo $loggedInUser->name; ?>

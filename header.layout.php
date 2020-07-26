@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <!-- Include custom CSS -->
     <link rel="stylesheet" href="./css/style.css" />
+    <!-- Font awsome icons -->
+    <link rel="stylesheet" href="./css/all.css">
 </head>
 <body>
 
