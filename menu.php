@@ -15,7 +15,7 @@
     <div class="row">
         <?php foreach($pizzas as $pizza) { ?>
             <div class="col-md-3 mb-3">
-                <div class="card mx-auto" style="width: 100%;">
+                <div class="card mx-auto" style="width: 100%; height:400px;">
                 <img class="card-img-top product-image" src="<?php echo ($pizza->img) ? $pizza->img : './img/no-image.png' ?>">
                     <div class="card-body text-center">
                         <h3 class="card-title"><?php echo $pizza->title; ?></h3>

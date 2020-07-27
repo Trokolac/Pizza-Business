@@ -369,7 +369,7 @@ class Pizza {
     // Send mail via php
 
     $content="Mail recived from: $email" . " / $name" . PHP_EOL . "\nOrder:" . "\n$order" . PHP_EOL . "\nMessage:" . "\n$message" . PHP_EOL . "\nResidence Address:" . "\n$adress" . PHP_EOL . "\nPhone Number:" . "\n$phone";
-    $recipient = "email1@gmail.com,email2@gmail.com"; // put in emails to wich orders will be sent
+    $recipient = "necbizmis93@gmail.com,email2@gmail.com"; // put in emails to wich orders will be sent
     $mailheader = "From: $email" . "\r\n" . PHP_EOL;
 
     $mail_status = mail($recipient, $subject, $content, $mailheader);
