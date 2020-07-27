@@ -16,6 +16,7 @@ class Pizza {
     public $deleted_at;
 
     function __construct($id = null) {
+        require_once './Helper.class.php';
         $this->db = require './db.inc.php';
 
         if($id) {
@@ -200,6 +201,7 @@ class Pizza {
           FROM `carts`
           WHERE `pizza_id` = :pizza_id
           AND `user_id` = :user_id
+          AND `deleted_at` is NULL
         ");
         $stmt_getCartProduct->execute([
           ':pizza_id' => $this->id,
@@ -214,6 +216,7 @@ class Pizza {
             UPDATE `carts`
             SET `quantity` = :new_quantity
             WHERE `id` = :cart_id
+            AND `deleted_at` is NULL
           ");
           return $stmt_updateQuantity->execute([
             ':new_quantity' => $pizzaInCart->quantity + $quantity,
@@ -249,7 +252,8 @@ class Pizza {
           `carts`.`quantity`,
           `carts`.`created_at`
         FROM `carts`, `pizza`
-        WHERE `carts`.`pizza_id` = `pizza`.`id`
+        WHERE `carts` . `deleted_at` is NULL
+        AND `carts`.`pizza_id` = `pizza`.`id`
         AND `carts`.`user_id` = :user_id
       ");
       $stmt_getCart->execute([ ':user_id' => $_SESSION['user_id'] ]);
@@ -263,6 +267,7 @@ class Pizza {
         DELETE
         FROM `carts`
         WHERE `id` = :id
+        AND `deleted_at` is NULL
       ");
       return $stmt_removeFromCart->execute([ ':id' => $id ]);
     }
@@ -274,6 +279,7 @@ class Pizza {
         UPDATE `carts`
         SET `quantity` = :new_quantity
         WHERE `id` = :cart_id
+        AND `deleted_at` is NULL
       ");
       return $stmt_updateQuantity->execute([
         ':cart_id' => $cartId,
@@ -291,6 +297,7 @@ class Pizza {
         SELECT *
         FROM `carts`
         WHERE `user_id` = $userId
+        AND `deleted_at` is NULL
       ");
       $stmt_get->execute();
       $cart = $stmt_get->fetchAll();
@@ -303,4 +310,56 @@ class Pizza {
         echo '</span>';
       }
     }
+
+    //SEND MAIL
+
+  public function mail(){
+    require_once './Helper.class.php';
+    require_once './User.class.php';
+      
+    $loggedInUser = new User();
+    $loggedInUser->loadLoggedInUser();
+
+    $id = $loggedInUser->id;
+    $name = $loggedInUser->name;
+    $email = $loggedInUser->email;
+    $adress= $_POST['adress'];
+    $phone= $_POST['phone'];
+    $order= $_POST['order'];
+    $subject = "Order";
+    if(isset( $_POST['message']))
+    $message = $_POST['message'];
+    
+      
+    if ($email === ''){
+      Helper::addError('There has been an error.');
+      header("Location: ./cart.php");
+      die();
+    } else {
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        Helper::addError('E-mail format is not valid.');
+        header("Location: ./cart.php");
+        die();
+      }
+    }
+
+    // Send mail via php
+
+    $content="Mail recived from: $email" . " / $name" . PHP_EOL . "\nOrder:" . "\n$order" . PHP_EOL . "\nMessage:" . "\n$message" . PHP_EOL . "\nResidence Address:" . "\n$adress" . PHP_EOL . "\nPhone Number:" . "\n$phone";
+    $recipient = "email1@gmail.com,email2@gmail.com"; // put in emails to wich orders will be sent
+    $mailheader = "From: $email" . "\r\n" . PHP_EOL;
+
+    $mail_status = mail($recipient, $subject, $content, $mailheader);
+
+    if ($mail_status){
+      
+
+      $stmt_cartHistory = $this->db->prepare("
+        UPDATE `carts`
+        SET `deleted_at` = now()
+        WHERE `user_id` = :user_id
+      ");
+      return $stmt_cartHistory->execute([':user_id' => $id]);
+    } 
+  }
 }

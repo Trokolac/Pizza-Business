@@ -11,7 +11,7 @@
 
 <!-- Card showing pizza information -->
 
-<div class="container-fluid mt-5">
+<div class="container-fluid">
     <div class="row">
         <?php foreach($pizzas as $pizza) { ?>
             <div class="col-md-3 mb-3">

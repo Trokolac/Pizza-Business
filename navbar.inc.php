@@ -1,7 +1,6 @@
 <?php require_once './User.class.php'; ?>
 <?php require_once './Pizza.class.php'; ?>
-
-<!-- This is navbar -->
+  <!-- This is navbar -->
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-warning">
@@ -24,12 +23,13 @@
         <a class="nav-link" href="#">Contact us</a>
       </li>
 
+    
       <?php 
-      if( User::isLoggedIn() ) { 
-        $loggedInUser = new User();
-        $loggedInUser->loadLoggedInUser();
-
-        
+          if( User::isLoggedIn() ) { 
+      ?>
+      <?php
+          $loggedInUser = new User();
+          $loggedInUser->loadLoggedInUser();
       ?>
       <li class="nav-item">
         <a class="nav-link" href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart<?php $cartNum = new Pizza();
@@ -37,18 +37,17 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <?php echo $loggedInUser->name; ?>
-        </a>
+        <?php echo $loggedInUser->name;?>
+          </a> 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-          <?php if($loggedInUser->acc_type == 'admin') { ?>
+        <?php if($loggedInUser->acc_type == 'admin') { ?>
             <a class="dropdown-item" href="./create-menu.php">Add new pizza</a>
-          <?php } ?>
+        <?php } ?>
           <a class="dropdown-item" href="./logout.php">Log out</a>
         </div>
       </li>
 
-      <?php } else { ?>
-
+    <?php }  else {?>
       <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Have account
@@ -58,8 +57,9 @@
         <a class="dropdown-item" href="./login.php">Log in</a>
       </div>
       </li>
+    <?php } ?>
       
-      <?php } ?>
+      
     </ul>
   </div>
 </nav>

@@ -1,4 +1,6 @@
-<?php require_once './User.class.php';
+<?php 
+include './header.layout.php';
+require_once './User.class.php';
 
 if( isset($_POST['login']) ) {
     $u = new User();
@@ -16,7 +18,6 @@ if( isset($_POST['login']) ) {
 
 ?>
 
-<?php include './header.layout.php'; ?>
 <div class="container-fluid mt-5">
     <div class="row">
         <div class="col-md-3"></div>

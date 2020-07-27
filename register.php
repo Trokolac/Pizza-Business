@@ -1,6 +1,6 @@
-<?php 
+<?php  
+include './header.layout.php';
 require_once './User.class.php';
-require_once './Helper.class.php';
 
 
 // adding new user to db
@@ -20,8 +20,6 @@ if( isset($_POST['register']) ) {
     }
   }
 ?>
-
-<?php include './header.layout.php'; ?>
 
 <div class="container-fluid mt-5">
     <div class="row">
