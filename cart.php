@@ -48,6 +48,12 @@ if( isset($_POST['mail_to']) ) {
 
 $pizzaProduct = $pizzaObject->getCart();
 
+if(empty($pizzaProduct)) {
+    Helper::addWarning('Cart is empty you can not browse it.');
+    header("Location: ./index.php");
+    die();
+}
+
 ?>
 
 <?php include './header.layout.php'; ?>
@@ -58,7 +64,8 @@ $pizzaProduct = $pizzaObject->getCart();
     
     <div class="row">
         <div class="col-md-7">
-            <h1>Cart</h1>
+        
+            <h4>Cart</h4>
 
             <table class="table">
 

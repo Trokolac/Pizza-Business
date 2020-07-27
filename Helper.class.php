@@ -10,6 +10,8 @@ class Helper {
     }
   }
 
+  // Handle Success Messages
+
   public static function addMessage($message) {
     Helper::sessionStart();
     return $_SESSION['message'] = $message;
@@ -32,6 +34,8 @@ class Helper {
     return isset($_SESSION['message']);
   }
 
+  // Handle Errors
+
   public static function addError($error) {
     Helper::sessionStart();
     return $_SESSION['error'] = $error;
@@ -52,6 +56,30 @@ class Helper {
   public static function ifError() {
     Helper::sessionStart();
     return isset($_SESSION['error']);
+  }
+
+  //Handle Warnings
+
+  public static function addWarning($warning) {
+    Helper::sessionStart();
+    return $_SESSION['warning'] = $warning;
+  }
+
+  public static function getWarning() {
+    Helper::sessionStart();
+
+    if( !isset($_SESSION['warning']) ) {
+      return false;
+    }
+
+    $warning = $_SESSION['warning'];
+    unset($_SESSION['warning']);
+    return $warning;
+  }
+
+  public static function ifWarning() {
+    Helper::sessionStart();
+    return isset($_SESSION['warning']);
   }
 
 }

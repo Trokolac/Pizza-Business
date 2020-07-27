@@ -1,7 +1,7 @@
 <?php require_once './User.class.php'; ?>
 <?php require_once './Pizza.class.php'; ?>
-  <!-- This is navbar -->
-
+  
+<!-- This is navbar -->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-warning">
   <a class="navbar-brand" href="./index.php">Pizza Business</a>
@@ -31,10 +31,15 @@
           $loggedInUser = new User();
           $loggedInUser->loadLoggedInUser();
       ?>
+      <?php 
+      $pizzaObject = new Pizza();
+      $pizzaProduct = $pizzaObject->getCart();
+      if(!empty($pizzaProduct)) { ?> 
       <li class="nav-item">
         <a class="nav-link" href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart<?php $cartNum = new Pizza();
         $sumOfPizza = $cartNum->showCartQuantity(); ?></a>
       </li>
+      <?php } ?>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <?php echo $loggedInUser->name;?>
@@ -43,6 +48,7 @@
         <?php if($loggedInUser->acc_type == 'admin') { ?>
             <a class="dropdown-item" href="./create-menu.php">Add new pizza</a>
         <?php } ?>
+          <a class="dropdown-item" href="./history.php">Order History</a>
           <a class="dropdown-item" href="./logout.php">Log out</a>
         </div>
       </li>

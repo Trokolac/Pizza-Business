@@ -35,6 +35,13 @@
             <strong>Success!</strong> <?php echo Helper::getMessage(); ?>
             </div>
         <?php } ?>
+
+        <?php if(Helper::ifWarning()) { ?>
+            <div class="alert alert-warning">
+            <strong>Warning!</strong> <?php echo Helper::getWarning(); ?>
+            </div>
+        <?php } ?>
+        
         </div>
         <div class="col-md-3"></div>
     </div>

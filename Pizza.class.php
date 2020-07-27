@@ -311,6 +311,29 @@ class Pizza {
       }
     }
 
+    // History of orders
+
+    public function orderHistory() {
+  
+      $stmt_getOrderHistory = $this->db->prepare("
+        SELECT
+          `carts`.`id`,
+          `pizza`.`id`,
+          `pizza`.`title`,
+          `pizza`.`price`,
+          `pizza`.`description`,
+          `carts`.`quantity`,
+          `carts`.`created_at`,
+          `carts`.`deleted_at`
+        FROM `carts`, `pizza`
+        WHERE `carts`.`deleted_at`
+        AND `carts`.`user_id` = :user_id
+        AND `carts`.`pizza_id` = `pizza`.`id`
+      ");
+      $stmt_getOrderHistory->execute([ ':user_id' => $_SESSION['user_id'] ]);
+      return $stmt_getOrderHistory->fetchAll();
+    }
+
     //SEND MAIL
 
   public function mail(){
