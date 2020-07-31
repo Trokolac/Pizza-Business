@@ -1,3 +1,4 @@
+<?php require_once './Helper.class.php'; ?>
 <?php require_once './User.class.php'; ?>
 <?php require_once './Pizza.class.php'; ?>
   
@@ -14,9 +15,6 @@
         <a class="nav-link" href="./index.php">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="./menu.php">Menu</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="#">About</a>
       </li>
       <li class="nav-item">
@@ -26,20 +24,15 @@
     
       <?php 
           if( User::isLoggedIn() ) { 
-      ?>
-      <?php
           $loggedInUser = new User();
           $loggedInUser->loadLoggedInUser();
       ?>
-      <?php 
-      $pizzaObject = new Pizza();
-      $pizzaProduct = $pizzaObject->getCart();
-      if(!empty($pizzaProduct)) { ?> 
       <li class="nav-item">
-        <a class="nav-link" href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart<?php $cartNum = new Pizza();
-        $sumOfPizza = $cartNum->showCartQuantity(); ?></a>
+        <a class="nav-link" href="./menu.php">Menu</a>
       </li>
-      <?php } ?>
+      <li class="nav-item">
+        <a class="nav-link" href="./cart.php"><i class="fas fa-shopping-cart"></i> Cart </a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <?php echo $loggedInUser->name;?>
@@ -54,6 +47,12 @@
       </li>
 
     <?php }  else {?>
+      <li class="nav-item">
+        <a class="nav-link" href="./menu-session.php">Menu</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./cart-session.php"><i class="fas fa-shopping-cart"></i> Cart </a>
+      </li>
       <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Have account
@@ -69,4 +68,3 @@
     </ul>
   </div>
 </nav>
-

@@ -186,11 +186,10 @@ class Pizza {
     
     // Handle adding to cart
 
-    public function addToCart($quantity) {
+    public function addToCart($quantity,$pizza_id) {
         Helper::sessionStart();
     
         if( !isset($_SESSION['user_id']) ) {
-          Helper::addError('You have to be logged in to add product to cart.');
           return false;
         }
 
@@ -204,7 +203,7 @@ class Pizza {
           AND `deleted_at` is NULL
         ");
         $stmt_getCartProduct->execute([
-          ':pizza_id' => $this->id,
+          ':pizza_id' => $pizza_id,
           ':user_id' => $_SESSION['user_id']
         ]);
         $pizzaInCart = $stmt_getCartProduct->fetch();
@@ -216,7 +215,6 @@ class Pizza {
             UPDATE `carts`
             SET `quantity` = :new_quantity
             WHERE `id` = :cart_id
-            AND `deleted_at` is NULL
           ");
           return $stmt_updateQuantity->execute([
             ':new_quantity' => $pizzaInCart->quantity + $quantity,
@@ -234,7 +232,7 @@ class Pizza {
           ");
           return $stmt_addToCart->execute([
             ':user_id' => $_SESSION['user_id'],
-            ':pizza_id' => $this->id,
+            ':pizza_id' => $pizza_id,
             ':quantity' => $quantity
           ]);
         }
@@ -271,45 +269,6 @@ class Pizza {
       ");
       return $stmt_removeFromCart->execute([ ':id' => $id ]);
     }
-  
-    // Update quantity in cart
-
-    public function updateQuantity($cartId, $newQuantity) {
-      $stmt_updateQuantity = $this->db->prepare("
-        UPDATE `carts`
-        SET `quantity` = :new_quantity
-        WHERE `id` = :cart_id
-        AND `deleted_at` is NULL
-      ");
-      return $stmt_updateQuantity->execute([
-        ':cart_id' => $cartId,
-        ':new_quantity' => $newQuantity
-      ]);
-    }
-
-    // Count pizza with different id and show the number
-
-    public function showCartQuantity() {
-      
-      $userId = $_SESSION['user_id'];
-        
-      $stmt_get = $this->db->prepare("
-        SELECT *
-        FROM `carts`
-        WHERE `user_id` = $userId
-        AND `deleted_at` is NULL
-      ");
-      $stmt_get->execute();
-      $cart = $stmt_get->fetchAll();
-      
-      $numberInCart = count($cart);
-        
-      if($numberInCart){
-        echo '&ensp;<span class="nav- link" >';
-        echo $numberInCart;
-        echo '</span>';
-      }
-    }
 
     // History of orders
 
@@ -334,7 +293,7 @@ class Pizza {
       return $stmt_getOrderHistory->fetchAll();
     }
 
-    //SEND MAIL
+  //SEND MAIL FROM CART TABLE
 
   public function mail(){
     require_once './Helper.class.php';
@@ -384,5 +343,42 @@ class Pizza {
       ");
       return $stmt_cartHistory->execute([':user_id' => $id]);
     } 
+  }
+  
+  //SEND MAIL FROM CART SESSION
+
+  public function mailSession(){
+    require_once './Helper.class.php';
+  
+    $name= $_POST['name'];
+    $email= $_POST['emailAdress'];
+    $adress= $_POST['adress'];
+    $phone= $_POST['phone'];
+    $order= $_POST['order'];
+    $subject = "Order";
+    if(isset( $_POST['message']))
+    $message = $_POST['message'];
+    
+      
+    if ($email === ''){
+      Helper::addError('There has been an error.');
+      header("Location: ./cart-session.php");
+      die();
+    } else {
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        Helper::addError('E-mail format is not valid.');
+        header("Location: ./cart-session.php");
+        die();
+      }
+    }
+
+    // Send mail via php
+
+    $content="Mail recived from: $email" . " / $name" . PHP_EOL . "\nOrder:" . "\n$order" . PHP_EOL . "\nMessage:" . "\n$message" . PHP_EOL . "\nResidence Address:" . "\n$adress" . PHP_EOL . "\nPhone Number:" . "\n$phone";
+    $recipient = "necbizmis93@gmail.com,email2@gmail.com"; // put in emails to wich orders will be sent
+    $mailheader = "From: $email" . "\r\n" . PHP_EOL;
+
+    $mail_status = mail($recipient, $subject, $content, $mailheader);
+    
   }
 }

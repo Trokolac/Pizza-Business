@@ -3,12 +3,6 @@ require_once './Pizza.class.php';
 require_once './Helper.class.php';
 
 Helper::sessionStart();
-    
-if( !isset($_SESSION['user_id']) ) {
-    Helper::addError('You have to be logged in to access cart.');
-    header("Location: ./index.php");
-    die();
-}
   
 $pizzaObject = new Pizza();
 
@@ -24,25 +18,15 @@ if( isset($_POST['remove_from_cart']) ) {
     }
 }
 
-if( isset($_POST['update_qunatity']) ) {
-    if( $pizzaObject->updateQuantity($_POST['cart_id'], $_POST['new_quantity']) ) {
-        Helper::addMessage('Quantity updated successfully.');
-    } else {
-        Helper::addError('Failed to update quantity.');
-    }
-}
-
 if( isset($_POST['mail_to']) ) {
     $productMail = new Pizza();
     $productMail->mail();
     if($productMail){
         Helper::addMessage('Your order has been successful.');
-        header("Location: ./cart.php");
         die();
     } else {
         Helper::addError('Please refresh page and try again.');
-      header("Location: ./cart.php");
-      die();
+        die();
     }
   }
 
@@ -85,17 +69,7 @@ if(empty($pizzaProduct)) {
                     <?php $total += $pizzaCart->quantity * $pizzaCart->price; ?>
                     <tr>
                         <th><?php echo $pizzaCart->title; ?></th>
-                        <td>
-                        <form action="./cart.php" method="post">
-                            <div class="input-group input-group-sm">
-                            <input type="hidden" name="cart_id" value="<?php echo $pizzaCart->id; ?>" />
-                            <input type="number" name="new_quantity" class="form-control" value="<?php echo $pizzaCart->quantity; ?>" min="1" />
-                            <div class="input-group-append">
-                                <button name="update_qunatity" class="btn btn-warning">Update</button>
-                            </div>
-                            </div>
-                        </form>
-                        </td>
+                        <td><?php echo $pizzaCart->quantity; ?></td>
                         <td>$<?php echo number_format($pizzaCart->price, 2, '.', ','); ?></td>
                         <td>$<?php echo number_format($pizzaCart->quantity * $pizzaCart->price, 2, '.', ','); ?></td>
                         <td>
