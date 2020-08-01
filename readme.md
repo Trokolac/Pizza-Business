@@ -14,10 +14,9 @@ App contains:
 
 Problems i had:
 
--i need to learn to use cookies so i can create cart without user having to log in;
 -heroku platform doesnt come with MySql (i did learn to add that via addons "ClearDB MySql");
 -heroku doesnt handle sending mail via php mail(); function, there is addon for that called SendGrid whichi didnt have time to implement, also there is little learning curve there unlike with setting up MySql on heroku;
--I am aware of little bugs here and there, i am confident that with more time i would resolve those ishues.
+-i dont know how to implement currency change in real time so that it is dinamic.
 
 Because i had little problems on heroku i did upload my web app to another platform called 000webhost
 
@@ -27,5 +26,7 @@ To access admin panel credentials are:
 
 -admin@shop.com -> email
 -123 -> password
+
+Graphics done by Katarina Lazic url link https://www.lazickatarinacportfolio.com    
 
 
