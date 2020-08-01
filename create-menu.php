@@ -53,7 +53,7 @@ if( isset($_POST['add']) ) {
 
                 <div class="form-group col-md-6">
                 <label for="inputPrice">Price</label>
-                <input type="number" name="price" id="inputPrice" class="form-control" />
+                <input type='number' name="price" id="inputPrice" class="form-control" step='0.01' value='0.00' placeholder='0.00' />
                 </div>
 
                 <div class="form-group col-md-6">

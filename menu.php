@@ -1,7 +1,15 @@
 <?php
 require_once './Pizza.class.php';
+require_once './User.class.php';
 require_once './Helper.class.php'; 
 
+if( !User::isLoggedIn() ) {
+    $loggedInUser = new User();
+    $loggedInUser->loadLoggedInUser();
+    Helper::addError('404 Page not found.');
+    header("Location: ./index.php");
+    die();
+}
 
 
     $p = new Pizza();
@@ -37,7 +45,11 @@ require_once './Helper.class.php';
                     <div class="card-body text-center">
                         <h4 class="card-title"><?php echo $pizza->title; ?></h4>
                         <div class="overflow-auto" style="height:50px;"><?php echo $pizza->description; ?></div>
-                        <h5 class="card-text">Cost: <?php echo $pizza->price; ?> $</h5>   
+                        <?php
+                            $pizzaPriceUsd = $pizza->price;
+                            $pizzaPriceEur = number_format($pizzaPriceUsd * 0.845073,2);
+                        ?>
+                        <h5 class="card-text">Cost: $<?php echo $pizzaPriceUsd; ?> / €<?php echo $pizzaPriceEur; ?></h5>   
                         <form action="./menu.php" method="post">
                         <input type="hidden" name="pizza_id" class="form-control" value="<?php echo $pizza->id ?>">
                         <input type="number" name="quantity" class="form-control" value="1" min="1">

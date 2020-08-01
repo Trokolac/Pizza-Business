@@ -51,7 +51,7 @@ $stmt_createPizzaTable = $db->prepare("
     `id` int AUTO_INCREMENT PRIMARY KEY,
     `title` varchar(255),
     `description` text,
-    `price` int,
+    `price` decimal(4,2) not NULL,
     `img` varchar(255),
     `created_at` datetime DEFAULT now(),
     `updated_at` datetime DEFAULT now() ON UPDATE now(),

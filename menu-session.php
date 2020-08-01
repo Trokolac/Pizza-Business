@@ -4,7 +4,11 @@ Helper::sessionStart();
 require_once './Pizza.class.php';
 include './header.layout.php';
 
-    
+if( isset($_SESSION['user_id']) ) {
+    Helper::addError('404 Page not found.');
+    header("Location: ./index.php");
+    die();
+}
 
     $p = new Pizza();
     $pizzas = $p->allPizzas();
@@ -97,7 +101,11 @@ while ($product = mysqli_fetch_assoc($result)):
             
             <h4 class="card-title"><?php echo $product['title']; ?></h4>
             <div class="overflow-auto" style="height:50px;"><?php echo $product['description']; ?></div>
-            <h5 class="card-text">Cost: <?php echo $product['price']; ?> $</h5> 
+            <?php 
+                $priceInUsd = $product['price'];
+                $priceInEur = number_format($priceInUsd * 0.845073, 2);
+            ?>
+            <h5 class="card-text">Cost: $<?php echo $priceInUsd; ?> / €<?php echo $priceInEur; ?> </h5> 
             <input type="number" name="quantity" class="form-control" value="1" min="1">
             <input type="hidden" name="name" value="<?php echo $product['title']?>">
             <input type="hidden" name="price" value="<?php echo $product['price']?>">

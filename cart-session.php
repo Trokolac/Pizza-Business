@@ -3,7 +3,11 @@ require_once './Helper.class.php';
 Helper::sessionStart();
 include './header.layout.php';
 
-
+if( isset($_SESSION['user_id']) ) {
+    Helper::addError('404 Page not found.');
+    header("Location: ./index.php");
+    die();
+}
 
 if(filter_input(INPUT_GET, 'action') == 'delete')
 {
@@ -56,9 +60,9 @@ if(isset($_SESSION['shopping_cart'])){
                 <thead>
                     <tr>
                     <th>Title</th>
-                    <th>Quantity</th>
+                    <th>*</th>
                     <th>Price</th>
-                    <th>Total price</th>
+                    <th>Total</th>
                     <th>Actions</th>
                     </tr>
                 </thead>
@@ -69,26 +73,27 @@ if(isset($_SESSION['shopping_cart'])){
                     if(!empty($_SESSION['shopping_cart']))
                     {
                         foreach ($_SESSION['shopping_cart'] as $key =>$product){
+                        
+                            $total += number_format($product['quantity']*$product['price'], 2);
+                        
                     ?>
                     <tr>
                         <th><?php echo $product['name']?></th>
                         <td><?php echo $product['quantity'];?></td>
-                        <td>$ <?php echo $product['price']?></td>
-                        <td>$ <?php echo number_format($product['quantity'] * $product['price']); ?></td>
+                        <?php
+                            $pizzaPriceinUsd = number_format($product['price'], 2);
+                            $pizzaPriceinEur = number_format($pizzaPriceinUsd * 0.845073, 2);
+                            $pizzaPriceTotalUsd = number_format($product['quantity'] * $pizzaPriceinUsd, 2);
+                            $pizzaPriceTotalEur = number_format($pizzaPriceTotalUsd * 0.845073, 2);
+                        ?>
+                        <td>$ <?php echo $pizzaPriceinUsd; ?> / €<?php echo $pizzaPriceinEur; ?></td>
+                        <td>$ <?php echo $pizzaPriceTotalUsd; ?> / €<?php echo $pizzaPriceTotalEur; ?></td>
                         <td> 
-                         
                             <form action="./cart-session.php?action=delete&id=<?php echo $product['id']?>" method="POST">
                             <a href=""><button class="btn btn-sm btn-outline-danger" name="remove_from_cart"><i class="far fa-trash-alt"></i> Delete</button> 
                             </a>
                             </form>
-                            
                         </td>
-                        <?php
-                            $total = $total +($product['quantity']*$product['price']);
-
-                        
-                        ?>
-                        
                     </tr>
                     
                     <?php } ?>
@@ -118,31 +123,27 @@ if(isset($_SESSION['shopping_cart'])){
 
             <form action="./cart-session.php" method="post">
             <div class="form-row">
-                
                 <div class="form-group col-md-12">
                 <label for="inputAdress"><b>Name:</b></label>
                 <input type="text" class="form-control" id="inputName" placeholder="Your name" name="name" required>
-                </div>
-                
+                </div>    
             </div>
+
             <div class="form-row">
-                
                 <div class="form-group col-md-12">
                 <label for="inputEmailAdress"><b>Email adress:</b></label>
                 <input type="email" class="form-control" id="inputAdress" placeholder="Email address" name="emailAdress" required>
                 </div>
-                
             </div>
+
             <div class="form-row">
-                
                 <div class="form-group col-md-12">
                 <label for="inputAdress"><b>Adress:</b></label>
                 <input type="text" class="form-control" id="inputAdress" placeholder="Reisdence address" name="adress" required>
                 </div>
-                
             </div>
+
             <div class="form-row">
-                
                 <div class="form-group col-md-12">
                 <label for="phone"><b>Phone number:</b></label>
                 <input class="form-control" type="tel" id="phone" name="phone" placeholder=""
@@ -152,33 +153,29 @@ if(isset($_SESSION['shopping_cart'])){
                 </div>
             </div>
 
-
             <div class="form-row">
                 <div class="col-md-12">
                     <div class="md-form">
                         <label for="message"> <b>Message:</b> </label>
                         <input type="hidden" name="order" value="<?php foreach ($_SESSION['shopping_cart'] as $key =>$product){ ?><?php echo $product['name'];?> x <?php echo $product['quantity'];?>&#10;<?php } ?>">
                         <textarea rows="3" type="text" id="message" name="message" class="form-control md-textarea"></textarea>
-                        
                     </div>
                 </div>
             </div>
 
-            
-
             <div class="form-row mt-4 mb-5">
-                <div class="col-md-5">
-                    
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-3"></div>
+                <div class="col-md-7">
                     <div class="row">
                         <div class="col-md-7"><h6>Total cart price:</h6></div>
-                        <div class="col-md-5"><h5><?php echo number_format($total, 2);?> $</h5></div>
+                        <?php
+                            $totalPriceUsd = number_format($total, 2); 
+                            $totalPriceEur = number_format($totalPriceUsd * 0.845073, 2);
+                        ?>
+                        <div class="col-md-5"><h5>$<?php echo $totalPriceUsd;?> / €<?php echo $totalPriceEur; ?></h5></div>
                     </div>
-                
-                    
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button name="mail_to" class="btn btn-sm btn-warning float-right">Order</button>
                 </div>
             </div>
@@ -186,11 +183,11 @@ if(isset($_SESSION['shopping_cart'])){
             </form>
 
         </div>
-        <div class="col-md-5">
-        <!-- PLACEHOLDER -->
+            <div class="col-md-5">
+            <!-- PLACEHOLDER -->
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <?php include './footer.layout.php'; ?>
