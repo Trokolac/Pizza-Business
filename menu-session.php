@@ -95,12 +95,12 @@ while ($product = mysqli_fetch_assoc($result)):
 
 <div class="col-md-3 mb-3">
 <form method="POST" action="./menu-session.php?action=add&id=<?php echo $product['id'];?>">
-    <div class="card mx-auto" style="width: 100%; height:450px;">
+    <div class="card mx-auto" style="width: 100%; height:475px;">
     <img class="card-img-top product-image" src="<?php echo ($product['img']) ? $product['img'] : './img/no-image.png' ?>">
         <div class="card-body text-center">
             
             <h4 class="card-title"><?php echo $product['title']; ?></h4>
-            <div class="overflow-auto" style="height:50px;"><?php echo $product['description']; ?></div>
+            <div class="overflow-auto" style="height:75px;"><?php echo $product['description']; ?></div>
             <?php 
                 $priceInUsd = $product['price'];
                 $priceInEur = number_format($priceInUsd * 0.845073, 2);
